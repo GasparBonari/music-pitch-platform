@@ -1,0 +1,88 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bg-0: #0a0612;
+  --color-bg-1: #110a1f;
+  --color-bg-2: #170e29;
+
+  --color-surface: rgba(255, 255, 255, 0.04);
+  --color-surface-strong: rgba(255, 255, 255, 0.07);
+  --color-surface-hover: rgba(255, 255, 255, 0.09);
+
+  --color-line: rgba(255, 255, 255, 0.08);
+  --color-line-strong: rgba(255, 255, 255, 0.14);
+
+  --color-text: #f4f1fa;
+  --color-text-muted: #aea6c2;
+  --color-text-dim: #7c7494;
+
+  --color-accent: #b388ff;
+  --color-accent-2: #5eead4;
+
+  --color-status-new: #5eead4;
+  --color-status-pitched: #b388ff;
+  --color-status-review: #ffb86b;
+
+  --font-sans: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+}
+
+:root {
+  --accent-grad: linear-gradient(135deg, #b388ff 0%, #5eead4 100%);
+  --accent-grad-soft: linear-gradient(135deg, rgba(179,136,255,0.15), rgba(94,234,212,0.15));
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html, body, #root { height: 100%; }
+
+body {
+  margin: 0;
+  color: var(--color-text);
+  background-color: var(--color-bg-0);
+  background-image:
+    radial-gradient(1200px 800px at 85% -10%, rgba(179, 136, 255, 0.18), transparent 60%),
+    radial-gradient(900px 700px at -10% 30%, rgba(94, 234, 212, 0.10), transparent 60%),
+    radial-gradient(700px 700px at 50% 110%, rgba(255, 119, 181, 0.10), transparent 60%);
+  background-attachment: fixed;
+  min-height: 100%;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: rgba(179, 136, 255, 0.35);
+  color: white;
+}
+
+button:not(:disabled) { cursor: pointer; }
+
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.07);
+  border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.14); }
+
+/* utilities style classes */
+@utility bg-accent-grad {
+  background-image: var(--accent-grad);
+}
+@utility bg-accent-grad-soft {
+  background-image: var(--accent-grad-soft);
+}
+@utility text-gradient {
+  background-image: linear-gradient(135deg, #ffffff, #cfc5e8 80%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+@utility glass-blur {
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
