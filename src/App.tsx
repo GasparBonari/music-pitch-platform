@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { AppShell } from './components/AppShell';
-import { Dashboard } from './components/Dashboard';
-import { SongDetail } from './components/SongDetail';
-import { SongStoreProvider } from './store';
+import { Dashboard } from './features/dashboard/Dashboard';
+import { SongDetail } from './features/song-detail/SongDetail';
+import { SongStoreProvider } from './store/SongStoreProvider';
 
 type Route = { name: 'dashboard' } | { name: 'song'; id: string };
 
@@ -14,7 +14,7 @@ function parseHash(): Route {
   return { name: 'dashboard' };
 }
 
-function App() {
+export default function App() {
   const [route, setRoute] = useState<Route>(parseHash);
 
   useEffect(() => {
@@ -23,29 +23,19 @@ function App() {
     return () => window.removeEventListener('hashchange', onChange);
   }, []);
 
-  // Reset scroll on route change.
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
+    window.scrollTo({ top: 0 });
   }, [route]);
-
-  const goSong = (id: string) => {
-    window.location.hash = `/songs/${id}`;
-  };
-  const goHome = () => {
-    window.location.hash = '/';
-  };
 
   return (
     <SongStoreProvider>
       <AppShell>
         {route.name === 'dashboard' ? (
-          <Dashboard onOpenSong={goSong} />
+          <Dashboard onOpenSong={(id) => (window.location.hash = `/songs/${id}`)} />
         ) : (
-          <SongDetail songId={route.id} onBack={goHome} />
+          <SongDetail songId={route.id} onBack={() => (window.location.hash = '/')} />
         )}
       </AppShell>
     </SongStoreProvider>
   );
 }
-
-export default App;
