@@ -80,16 +80,16 @@ export function Dashboard({ onOpenSong }: Props) {
 
       <section className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:justify-between sm:items-center">
         <div
-          role="tablist"
+          aria-label="Song filters"
           className="flex flex-wrap w-full sm:w-auto bg-surface border border-line rounded-[18px] sm:rounded-full p-1 gap-1"
         >
           {tabs.map(([key, label]) => {
             const active = filter === key;
             return (
               <button
+                type="button"
                 key={key}
-                role="tab"
-                aria-selected={active}
+                aria-pressed={active}
                 onClick={() => setFilter(key)}
                 className={`px-3.5 py-2 rounded-full text-[13px] font-medium whitespace-nowrap transition-colors duration-100 max-sm:flex-1 max-sm:min-w-[calc(50%-2px)] max-sm:text-center ${
                   active
