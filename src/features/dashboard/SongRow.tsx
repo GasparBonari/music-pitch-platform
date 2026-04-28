@@ -15,12 +15,17 @@ export function SongRow({ song, onOpen }: Props) {
   const writer = getSongwriter(song.songwriterId);
   const writerName = writer?.name ?? 'Unknown';
   const workflowContext = getWorkflowContext(song);
+  const needsReview = song.status === 'needs_review';
 
   return (
     <button
       onClick={onOpen}
       aria-label={`Open ${song.title}`}
-      className="group grid grid-cols-[1.6fr_1fr_1.2fr_auto] gap-6 items-center px-5 py-4 rounded-[14px] bg-surface border border-line text-left transition-[background-color,border-color] duration-150 hover:bg-surface-hover hover:border-line-strong focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-2 max-lg:grid-cols-[1fr_auto] max-lg:gap-3"
+      className={`group relative overflow-hidden grid grid-cols-[1.6fr_1fr_1.2fr_auto] gap-6 items-center px-5 py-4 rounded-[14px] border text-left transition-[background-color,border-color] duration-150 focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-2 max-lg:grid-cols-[1fr_auto] max-lg:gap-3 ${
+        needsReview
+          ? 'bg-[linear-gradient(90deg,rgba(255,184,107,0.08),rgba(255,184,107,0.02)_24%,rgba(255,255,255,0.03)_100%)] border-status-review/28 hover:border-status-review/40 hover:bg-[linear-gradient(90deg,rgba(255,184,107,0.11),rgba(255,184,107,0.03)_24%,rgba(255,255,255,0.05)_100%)] before:absolute before:left-0 before:top-3 before:bottom-3 before:w-1 before:rounded-full before:bg-status-review before:shadow-[0_0_14px_rgba(255,184,107,0.5)]'
+          : 'bg-surface border-line hover:bg-surface-hover hover:border-line-strong'
+      }`}
     >
       <div className="min-w-0">
         <div className="flex items-center gap-2.5 mb-1.5">
