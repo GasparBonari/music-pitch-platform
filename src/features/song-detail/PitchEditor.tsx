@@ -1,7 +1,8 @@
 import { useEffect, useMemo, useState } from 'react';
+import type { IconType } from 'react-icons';
 import type { Pitch } from '../../types';
 import { formatRelative } from '../../utils/format';
-import { LuCheck } from 'react-icons/lu';
+import { LuCheck, LuMessageSquareQuote, LuTags, LuUsers } from 'react-icons/lu';
 import { ChipInput } from '../../components/ChipInput';
 
 interface Props {
@@ -71,7 +72,11 @@ export function PitchEditor({ initial, onSave, onRemove }: Props) {
         )}
       </header>
 
-      <Field label="Tags" help="Vibe, genre, mood — anything an artist would search for.">
+      <Field
+        label="Tags"
+        icon={LuTags}
+        help="Vibe, genre, mood — anything an artist would search for."
+      >
         <ChipInput
           chips={tags}
           onChange={setTags}
@@ -84,6 +89,7 @@ export function PitchEditor({ initial, onSave, onRemove }: Props) {
 
       <Field
         label="Description"
+        icon={LuMessageSquareQuote}
         labelFor="pitch-desc"
         help="The grand vision — what makes this song special?"
       >
@@ -101,7 +107,11 @@ export function PitchEditor({ initial, onSave, onRemove }: Props) {
         </div>
       </Field>
 
-      <Field label="Target artists" help="Who would you like to pitch this to first?">
+      <Field
+        label="Target artists"
+        icon={LuUsers}
+        help="Who would you like to pitch this to first?"
+      >
         <ChipInput
           chips={artists}
           onChange={setArtists}
@@ -164,19 +174,22 @@ export function PitchEditor({ initial, onSave, onRemove }: Props) {
 
 function Field({
   label,
+  icon: Icon,
   labelFor,
   help,
   children,
 }: {
   label: string;
+  icon?: IconType;
   labelFor?: string;
   help: string;
   children: React.ReactNode;
 }) {
   return (
     <div className="flex flex-col gap-1.5">
-      <label className="text-[13px] font-semibold text-text" htmlFor={labelFor}>
-        {label}
+      <label className="inline-flex items-center gap-2 text-[13px] font-semibold text-text" htmlFor={labelFor}>
+        {Icon && <Icon size={15} className="text-text-dim" />}
+        <span>{label}</span>
       </label>
       <p className="m-0 mb-1 text-xs text-text-dim">{help}</p>
       {children}
