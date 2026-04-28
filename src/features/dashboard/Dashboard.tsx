@@ -76,8 +76,11 @@ export function Dashboard({ onOpenSong }: Props) {
         <StatCard label="Total songs" value={stats.total} tone="muted" hint="In your organization" />
       </section>
 
-      <section className="flex flex-wrap gap-3 justify-between items-center">
-        <div role="tablist" className="inline-flex bg-surface border border-line rounded-full p-1 gap-0.5">
+      <section className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:justify-between sm:items-center">
+        <div
+          role="tablist"
+          className="flex flex-wrap w-full sm:w-auto bg-surface border border-line rounded-[18px] sm:rounded-full p-1 gap-1"
+        >
           {tabs.map(([key, label]) => {
             const active = filter === key;
             return (
@@ -86,7 +89,7 @@ export function Dashboard({ onOpenSong }: Props) {
                 role="tab"
                 aria-selected={active}
                 onClick={() => setFilter(key)}
-                className={`px-3.5 py-2 rounded-full text-[13px] font-medium whitespace-nowrap transition-colors duration-100 ${
+                className={`px-3.5 py-2 rounded-full text-[13px] font-medium whitespace-nowrap transition-colors duration-100 max-sm:flex-1 max-sm:min-w-[calc(50%-2px)] max-sm:text-center ${
                   active
                     ? 'bg-surface-hover text-text shadow-[inset_0_0_0_1px_var(--color-line-strong)]'
                     : 'text-text-muted hover:text-text'
@@ -98,19 +101,19 @@ export function Dashboard({ onOpenSong }: Props) {
           })}
         </div>
 
-        <div className="flex gap-2 items-center max-sm:w-full">
-          <div className="flex items-center gap-2 px-3 py-2 rounded-full bg-surface border border-line text-text-muted focus-within:border-accent max-sm:flex-1">
+        <div className="flex gap-2 items-center w-full sm:w-auto max-sm:flex-col max-sm:items-stretch">
+          <div className="flex items-center gap-2 px-3 py-2 rounded-full bg-surface border border-line text-text-muted focus-within:border-accent w-full sm:min-w-[320px]">
             <LuSearch size={16} />
             <input
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Search title, writer, tag…"
               aria-label="Search songs"
-              className="bg-transparent border-0 outline-none w-56 text-text placeholder:text-text-dim max-sm:w-full"
+              className="bg-transparent border-0 outline-none min-w-0 flex-1 text-text placeholder:text-text-dim"
             />
           </div>
           <select
-            className="bg-surface border border-line rounded-full text-text px-3 py-2 text-[13px]"
+            className="bg-surface border border-line rounded-full text-text px-3 py-2 text-[13px] w-full sm:w-auto"
             value={sort}
             onChange={(e) => setSort(e.target.value as SortKey)}
             aria-label="Sort"
