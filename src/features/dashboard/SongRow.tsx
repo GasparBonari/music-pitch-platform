@@ -14,6 +14,7 @@ interface Props {
 export function SongRow({ song, onOpen }: Props) {
   const writer = getSongwriter(song.songwriterId);
   const writerName = writer?.name ?? 'Unknown';
+  const workflowContext = getWorkflowContext(song);
 
   return (
     <button
@@ -45,6 +46,7 @@ export function SongRow({ song, onOpen }: Props) {
           <Dot />
           <span>{formatDuration(song.duration)}</span>
         </div>
+        <div className="mt-1 text-[12px] text-text-dim truncate">{workflowContext}</div>
       </div>
 
       <div className="text-text-muted max-lg:hidden">
@@ -80,6 +82,23 @@ export function SongRow({ song, onOpen }: Props) {
       </span>
     </button>
   );
+}
+
+function getWorkflowContext(song: Song): string {
+  if (song.status === 'needs_review') {
+    return song.pitch?.description ?? 'Needs manager review before pitching';
+  }
+
+  if (!song.pitch) {
+    return 'Awaiting manager pitch';
+  }
+
+  const shownArtists = song.pitch.targetArtists.slice(0, 2);
+  const artistsLabel = shownArtists.join(', ');
+  const remaining = song.pitch.targetArtists.length - shownArtists.length;
+  const targets = remaining > 0 ? `${artistsLabel} +${remaining}` : artistsLabel;
+
+  return `Pitching to ${targets} • Updated ${formatRelative(song.pitch.updatedAt)}`;
 }
 
 function Dot() {

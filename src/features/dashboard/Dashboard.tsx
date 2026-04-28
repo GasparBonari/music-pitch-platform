@@ -38,17 +38,19 @@ export function Dashboard({ onOpenSong }: Props) {
     else if (filter === 'attention')
       list = list.filter((s) => s.status === 'new' || s.status === 'needs_review');
 
-    if (query.trim()) {
-      const q = query.toLowerCase();
-      list = list.filter((s) => {
-        const writer = getSongwriter(s.songwriterId);
-        return (
-          s.title.toLowerCase().includes(q) ||
-          writer?.name.toLowerCase().includes(q) ||
-          s.pitch?.tags.some((t) => t.toLowerCase().includes(q))
-        );
-      });
-    }
+        if (query.trim()) {
+          const q = query.toLowerCase();
+          list = list.filter((s) => {
+            const writer = getSongwriter(s.songwriterId);
+            return (
+              s.title.toLowerCase().includes(q) ||
+              writer?.name.toLowerCase().includes(q) ||
+              s.pitch?.tags.some((t) => t.toLowerCase().includes(q)) ||
+              s.pitch?.targetArtists.some((artist) => artist.toLowerCase().includes(q)) ||
+              s.pitch?.description.toLowerCase().includes(q)
+            );
+          });
+        }
 
     return [...list].sort((a, b) => {
       if (sort === 'title') return a.title.localeCompare(b.title);
