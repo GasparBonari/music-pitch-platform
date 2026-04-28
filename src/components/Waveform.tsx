@@ -19,7 +19,9 @@ export function Waveform({ data, progress, height = 56, compact, onSeek }: Props
 
   return (
     <div
-      className={`flex items-center gap-0.5 w-full py-1 ${interactive ? 'cursor-pointer' : ''}`}
+      className={`flex min-w-0 w-full items-center overflow-hidden py-1 ${
+        compact ? 'gap-px' : 'gap-px sm:gap-0.5'
+      } ${interactive ? 'cursor-pointer' : ''}`}
       style={{ height }}
       onClick={handleClick}
       role={interactive ? 'slider' : undefined}
@@ -32,14 +34,13 @@ export function Waveform({ data, progress, height = 56, compact, onSeek }: Props
         return (
           <span
             key={i}
-            className={`flex-1 rounded-[2px] transition-colors duration-100 ${
+            className={`min-w-0 flex-1 rounded-[2px] transition-colors duration-100 ${
               played
                 ? 'bg-accent shadow-[0_0_6px_rgba(179,136,255,0.5)]'
                 : 'bg-white/20'
             }`}
             style={{
               height: `${Math.max(8, v * 100)}%`,
-              minWidth: compact ? '1.5px' : '2px',
             }}
           />
         );
