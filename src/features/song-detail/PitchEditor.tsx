@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import type { Pitch } from '../../types';
 import { formatRelative } from '../../utils/format';
 import { LuCheck } from 'react-icons/lu';
@@ -17,6 +17,7 @@ export function PitchEditor({ initial, onSave, onRemove }: Props) {
   const [tagDraft, setTagDraft] = useState('');
   const [artistDraft, setArtistDraft] = useState('');
   const [savedKey, setSavedKey] = useState<string | null>(null);
+  const [confirmingRemove, setConfirmingRemove] = useState(false);
 
   const original = useMemo(
     () => ({
@@ -34,6 +35,16 @@ export function PitchEditor({ initial, onSave, onRemove }: Props) {
 
   const canSave =
     tags.length > 0 && description.trim().length > 0 && artists.length > 0 && dirty;
+
+  useEffect(() => {
+    setTags(initial?.tags ?? []);
+    setDescription(initial?.description ?? '');
+    setArtists(initial?.targetArtists ?? []);
+    setTagDraft('');
+    setArtistDraft('');
+    setSavedKey(null);
+    setConfirmingRemove(false);
+  }, [initial]);
 
   const handleSave = () => {
     if (!canSave) return;
@@ -103,12 +114,33 @@ export function PitchEditor({ initial, onSave, onRemove }: Props) {
 
       <footer className="flex items-center justify-between mt-1 pt-4 border-t border-line gap-3 flex-wrap">
         {initial && (
-          <button
-            onClick={onRemove}
-            className="px-4 py-2.5 rounded-full text-[13px] text-text-muted border border-line transition-colors duration-100 hover:text-[#ff8a8a] hover:border-[rgba(255,138,138,0.4)] hover:bg-[rgba(255,138,138,0.06)]"
-          >
-            Remove pitch
-          </button>
+          confirmingRemove ? (
+            <div className="flex items-center gap-2 flex-wrap">
+              <span className="text-[12px] text-[#ffb3b3]">Remove this pitch?</span>
+              <button
+                type="button"
+                onClick={onRemove}
+                className="px-4 py-2.5 rounded-full text-[13px] font-medium text-[#ffb3b3] border border-[rgba(255,138,138,0.38)] bg-[rgba(255,138,138,0.08)] transition-colors duration-100 hover:bg-[rgba(255,138,138,0.14)]"
+              >
+                Confirm remove
+              </button>
+              <button
+                type="button"
+                onClick={() => setConfirmingRemove(false)}
+                className="px-4 py-2.5 rounded-full text-[13px] text-text-muted border border-line transition-colors duration-100 hover:text-text hover:border-line-strong"
+              >
+                Cancel
+              </button>
+            </div>
+          ) : (
+            <button
+              type="button"
+              onClick={() => setConfirmingRemove(true)}
+              className="px-4 py-2.5 rounded-full text-[13px] text-text-muted border border-line transition-colors duration-100 hover:text-[#ff8a8a] hover:border-[rgba(255,138,138,0.4)] hover:bg-[rgba(255,138,138,0.06)]"
+            >
+              Remove pitch
+            </button>
+          )
         )}
         <div className="ml-auto inline-flex items-center gap-3">
           {saved && (
